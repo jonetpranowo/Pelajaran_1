@@ -3,8 +3,11 @@ Pertemuan Pertama
 Lilik Pranowo
 March 22, 2017
 
-R Markdown
-----------
+Alternative using "dplyr" package
+=================================
+
+Data manipulation
+-----------------
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
