@@ -76,7 +76,7 @@ Arrest_Daily <- dat1 %>%
 Plots
 -----
 
-You can also embed plots, for example:
+Plot the number of council districts that reports at least one arrest for each day:
 
 ``` r
 rdate <- as.Date(Arrest_Daily$DATE, "%Y-%m-%d")
