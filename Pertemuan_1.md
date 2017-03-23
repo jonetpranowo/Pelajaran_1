@@ -9,27 +9,114 @@ Alternative using "dplyr" package
 Data manipulation
 -----------------
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Load "dplyr" and "tidyr" packages
 
 ``` r
-summary(cars)
+library(dplyr) 
 ```
 
-    ##      speed           dist       
-    ##  Min.   : 4.0   Min.   :  2.00  
-    ##  1st Qu.:12.0   1st Qu.: 26.00  
-    ##  Median :15.0   Median : 36.00  
-    ##  Mean   :15.4   Mean   : 42.98  
-    ##  3rd Qu.:19.0   3rd Qu.: 56.00  
-    ##  Max.   :25.0   Max.   :120.00
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` r
+library(tidyr)
+```
+
+Read data:
+
+``` r
+dat <- read.csv("ArrestMini.csv")
+dat<-na.omit(dat)
+```
+
+Create new variables: "DATE" and "TIME" from variables "ARRESTTIME" then save it to "dat1" dataframe
+
+``` r
+dat1 <- dat %>% 
+  separate(ARRESTTIME, c('DATE', 'TIME'), sep = 'T')
+```
+
+    ##         DATE     TIME COUNCIL_DISTRICT
+    ## 1 2016-09-12 22:53:00                1
+    ## 2 2016-12-26 20:36:00                7
+    ## 3 2016-12-27 15:19:00                4
+    ## 4 2017-01-04 20:09:00                1
+    ## 5 2017-01-07 22:28:00                6
+    ## 6 2016-09-18 13:55:00                6
+
+Aggregate council districts that is affected by crime on the day --&gt; I save it as "Arrest\_Daily"
+
+``` r
+Arrest_Daily <- dat1 %>%
+  mutate(Date = as.Date(DATE, "%m/%d/%Y")) %>%
+  group_by(DATE) %>%
+  summarize(CASES = n(), NUM_COUNCIL = n_distinct(COUNCIL_DISTRICT)) %>%
+  arrange(DATE) 
+```
+
+    ## # A tibble: 212 × 3
+    ##          DATE CASES NUM_COUNCIL
+    ##         <chr> <int>       <int>
+    ## 1  2014-11-16     3           1
+    ## 2  2015-05-29     1           1
+    ## 3  2015-11-04     2           1
+    ## 4  2016-02-12     1           1
+    ## 5  2016-02-17     1           1
+    ## 6  2016-03-03     1           1
+    ## 7  2016-04-04     1           1
+    ## 8  2016-04-08     1           1
+    ## 9  2016-04-10     1           1
+    ## 10 2016-04-12     2           1
+    ## # ... with 202 more rows
+
+Aggregate council districts that is affected by crime on the day --&gt; I save it as "Arrest\_Daily"
+
+``` r
+Arrest_Daily <- dat1 %>%
+  mutate(Date = as.Date(DATE,"%Y-%m-%d")) %>%
+  group_by(DATE) %>%
+  summarize(CASES = n(), NUM_COUNCIL = n_distinct(COUNCIL_DISTRICT)) %>%
+  arrange(DATE) 
+```
+
+    ## # A tibble: 212 × 3
+    ##          DATE CASES NUM_COUNCIL
+    ##         <chr> <int>       <int>
+    ## 1  2014-11-16     3           1
+    ## 2  2015-05-29     1           1
+    ## 3  2015-11-04     2           1
+    ## 4  2016-02-12     1           1
+    ## 5  2016-02-17     1           1
+    ## 6  2016-03-03     1           1
+    ## 7  2016-04-04     1           1
+    ## 8  2016-04-08     1           1
+    ## 9  2016-04-10     1           1
+    ## 10 2016-04-12     2           1
+    ## # ... with 202 more rows
 
 Including Plots
 ---------------
 
 You can also embed plots, for example:
 
-![](Pertemuan_1_files/figure-markdown_github/pressure-1.png)
+convert variable "Date" from character to date
+
+``` r
+rdate <- as.Date(Arrest_Daily$DATE, "%Y-%m-%d")
+```
+
+``` r
+plot(Arrest_Daily$NUM_COUNCIL~rdate, type="l", col="red")
+```
+
+![](Pertemuan_1_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
