@@ -1,10 +1,7 @@
-Pertemuan Pertama
+Alternative HW using dplyr package
 ================
 Lilik Pranowo
 March 22, 2017
-
-Alternative using "dplyr" package
-=================================
 
 Data manipulation
 -----------------
@@ -56,7 +53,6 @@ Aggregate council districts that is affected by crime on the day --&gt; I save i
 
 ``` r
 Arrest_Daily <- dat1 %>%
-  mutate(Date = as.Date(DATE, "%m/%d/%Y")) %>%
   group_by(DATE) %>%
   summarize(CASES = n(), NUM_COUNCIL = n_distinct(COUNCIL_DISTRICT)) %>%
   arrange(DATE) 
@@ -77,46 +73,17 @@ Arrest_Daily <- dat1 %>%
     ## 10 2016-04-12     2           1
     ## # ... with 202 more rows
 
-Aggregate council districts that is affected by crime on the day --&gt; I save it as "Arrest\_Daily"
-
-``` r
-Arrest_Daily <- dat1 %>%
-  mutate(Date = as.Date(DATE,"%Y-%m-%d")) %>%
-  group_by(DATE) %>%
-  summarize(CASES = n(), NUM_COUNCIL = n_distinct(COUNCIL_DISTRICT)) %>%
-  arrange(DATE) 
-```
-
-    ## # A tibble: 212 × 3
-    ##          DATE CASES NUM_COUNCIL
-    ##         <chr> <int>       <int>
-    ## 1  2014-11-16     3           1
-    ## 2  2015-05-29     1           1
-    ## 3  2015-11-04     2           1
-    ## 4  2016-02-12     1           1
-    ## 5  2016-02-17     1           1
-    ## 6  2016-03-03     1           1
-    ## 7  2016-04-04     1           1
-    ## 8  2016-04-08     1           1
-    ## 9  2016-04-10     1           1
-    ## 10 2016-04-12     2           1
-    ## # ... with 202 more rows
-
-Including Plots
----------------
+Plots
+-----
 
 You can also embed plots, for example:
-
-convert variable "Date" from character to date
 
 ``` r
 rdate <- as.Date(Arrest_Daily$DATE, "%Y-%m-%d")
 ```
 
 ``` r
-plot(Arrest_Daily$NUM_COUNCIL~rdate, type="l", col="red")
+plot(Arrest_Daily$NUM_COUNCIL~rdate, type="l", col="red", xlab="Time",ylab="Numb of Council Districts Having Crime", main="The Spread of Crime", lwd=1)
 ```
 
-![](Pertemuan_1_files/figure-markdown_github/unnamed-chunk-10-1.png)
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+![](Pertemuan_1_files/figure-markdown_github/unnamed-chunk-8-1.png)
